@@ -1,17 +1,19 @@
 #!/bin/bash
 
 dir=$1
+filename=$2
 getFiles=(`ls $dir`)
-
+    
 for i in "${getFiles[@]}"
 do
-  if [ "$i" != "$2" ]; then
-    echo $i
-    echo "removing symlink"
-    sleep 1
-  else
-    echo $i
-    echo "file already exists"
-    sleep 1
-  fi
+    if [ "$i" != "$filename" ] && [ -L $dir/$i ]; then
+         echo "$i"
+         echo "removing symlink"
+     elif [ "$i" != "$filename" ]; then
+         echo "$i unique, not linked"
+         echo "not removing"
+     else
+        echo $i
+        echo "file already exists"
+    fi
 done
